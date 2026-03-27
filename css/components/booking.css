@@ -1,0 +1,128 @@
+/* Booking Section Styles */
+
+.booking-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.booking-form-wrapper {
+    padding: 3rem;
+}
+
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.step-dot {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.step-dot::after {
+    content: '';
+    position: absolute;
+    right: -1rem;
+    width: 1rem;
+    height: 2px;
+    background: var(--glass-border);
+}
+
+.step-dot:last-child::after {
+    display: none;
+}
+
+.step-dot.active {
+    background: var(--primary-gold);
+    color: #000;
+    border-color: var(--primary-gold);
+}
+
+.step-dot.completed {
+    background: rgba(212, 175, 55, 0.3);
+    border-color: var(--primary-gold);
+    color: var(--primary-gold);
+}
+
+.form-step {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.form-step h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.form-summary {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-summary h4 {
+    margin-bottom: 1rem;
+    color: var(--primary-gold);
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.summary-item span:first-child {
+    color: var(--text-secondary);
+}
+
+.summary-item span:last-child {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+    .booking-form-wrapper {
+        padding: 2rem 1.5rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .step-dot {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+}
