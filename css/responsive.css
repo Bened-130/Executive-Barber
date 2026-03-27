@@ -1,0 +1,96 @@
+/* Responsive Breakpoints & Utilities */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    :root {
+        --section-padding: 100px;
+    }
+}
+
+/* Large Mobile */
+@media (max-width: 768px) {
+    :root {
+        --section-padding: 80px;
+    }
+
+    .section-header h2 {
+        font-size: 2.2rem;
+    }
+
+    .btn-lg {
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    :root {
+        --section-padding: 60px;
+    }
+
+    .container {
+        padding: 0 4%;
+    }
+
+    .section-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .section-header p {
+        font-size: 1rem;
+    }
+
+    .glass-card {
+        border-radius: var(--radius-md);
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .btn,
+    .theme-toggle,
+    .mobile-menu-btn,
+    .floating-card,
+    .social-links,
+    .map-container,
+    #particles-canvas,
+    .bg-animation {
+        display: none !important;
+    }
+
+    .section {
+        display: block !important;
+        opacity: 1 !important;
+        min-height: auto !important;
+        padding: 2rem 0 !important;
+        page-break-inside: avoid;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    .glass-card {
+        background: white !important;
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+    }
+}
