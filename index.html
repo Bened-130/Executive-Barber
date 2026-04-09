@@ -35,41 +35,37 @@
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
-    <!-- Background -->
-    <div class="bg-animation"></div>
-    <canvas id="particles-canvas"></canvas>
-
     <!-- Navigation -->
-    <nav class="navbar glass" id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="logo" data-nav>
-                <i class="fas fa-cut"></i>
-                <span>Executive Barber</span>
+<nav class="navbar glass" id="navbar">
+    <div class="nav-container">
+        <a href="#home" class="logo" data-nav>
+            <i class="fas fa-cut"></i>
+            <span>Executive Barber</span>
+        </a>
+        
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" class="nav-link active" data-nav data-mobile-nav>Home</a></li>
+            <li><a href="#services" class="nav-link" data-nav data-mobile-nav>Services</a></li>
+            <li><a href="#gallery" class="nav-link" data-nav data-mobile-nav>Gallery</a></li>
+            <li><a href="#products" class="nav-link" data-nav data-mobile-nav>Products</a></li>
+            <li><a href="#booking" class="nav-link" data-nav data-mobile-nav>Book Now</a></li>
+            <li><a href="#contact" class="nav-link" data-nav data-mobile-nav>Contact</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a href="#booking" class="btn btn-primary desktop-only" data-nav>
+                <i class="fas fa-calendar-check"></i>
+                <span>Book</span>
             </a>
-            
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home" class="nav-link active" data-nav>Home</a></li>
-                <li><a href="#services" class="nav-link" data-nav>Services</a></li>
-                <li><a href="#gallery" class="nav-link" data-nav>Gallery</a></li>
-                <li><a href="#products" class="nav-link" data-nav>Products</a></li>
-                <li><a href="#booking" class="nav-link" data-nav>Book Now</a></li>
-                <li><a href="#contact" class="nav-link" data-nav>Contact</a></li>
-            </ul>
-            
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <a href="#booking" class="btn btn-primary" data-nav>
-                    <i class="fas fa-calendar-check"></i>
-                    <span>Book</span>
-                </a>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- Main Content Sections -->
     <main id="main-content">
