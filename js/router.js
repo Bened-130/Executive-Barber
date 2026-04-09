@@ -10,12 +10,15 @@ const Router = {
     init() {
         // Handle initial load
         const hash = window.location.hash.substring(1) || 'home';
-        this.navigate(hash);
+        this.navigate(hash, false);
 
-        // Handle hash changes
+        // Handle hash changes (back/forward buttons)
         window.addEventListener('hashchange', (e) => {
             const newHash = window.location.hash.substring(1) || 'home';
-            this.navigate(newHash);
+            // Only navigate if it's a different route
+            if (newHash !== this.currentRoute) {
+                this.navigate(newHash, false);
+            }
         });
 
         // Handle browser back/forward
@@ -23,49 +26,74 @@ const Router = {
             const hash = window.location.hash.substring(1) || 'home';
             this.navigate(hash, false);
         });
-
-        // Intercept link clicks
-        document.addEventListener('click', (e) => {
-            const link = e.target.closest('a[data-nav]');
-            if (link) {
-                e.preventDefault();
-                const hash = link.getAttribute('href').substring(1);
-                this.navigate(hash);
-                window.history.pushState({}, '', `#${hash}`);
-            }
-        });
     },
 
     /**
      * Navigate to route
      * @param {string} route - Route name
-     * @param {boolean} updateHistory - Whether to update browser history
+     * @param {boolean} pushState - Whether to update browser history
      */
-    navigate(route, updateHistory = true) {
+    navigate(route, pushState = true) {
+        // Validate route
         if (!this.routes.includes(route)) {
             route = 'home';
         }
 
+        // Don't re-navigate to same route
+        if (route === this.currentRoute && document.querySelector('.section.active')) {
+            return;
+        }
+
         this.currentRoute = route;
 
-        // Update sections
-        document.querySelectorAll('.section').forEach(section => {
-            section.classList.remove('active');
-            if (section.id === route) {
-                section.classList.add('active');
-                // Trigger section-specific init
-                this.onRouteEnter(route);
-            }
-        });
+        // Update sections visibility
+        this.updateSections(route);
 
-        // Update nav
-        Navbar.setActiveLink(route);
+        // Update nav active state
+        if (typeof Navbar !== 'undefined') {
+            Navbar.setActiveLink(route);
+        }
+
+        // Update URL if needed
+        if (pushState) {
+            window.history.pushState({ route }, '', `#${route}`);
+        }
 
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
         // Update document title
         this.updateTitle(route);
+
+        // Trigger route-specific initialization
+        this.onRouteEnter(route);
+    },
+
+    /**
+     * Update section visibility
+     * @param {string} route - Current route
+     */
+    updateSections(route) {
+        const sections = document.querySelectorAll('.section');
+        
+        sections.forEach(section => {
+            if (section.id === route) {
+                section.classList.add('active');
+                section.style.display = 'block';
+                // Small delay for fade-in animation
+                setTimeout(() => {
+                    section.style.opacity = '1';
+                }, 10);
+            } else {
+                section.classList.remove('active');
+                section.style.opacity = '0';
+                setTimeout(() => {
+                    if (!section.classList.contains('active')) {
+                        section.style.display = 'none';
+                    }
+                }, 300);
+            }
+        });
     },
 
     /**
@@ -78,15 +106,27 @@ const Router = {
                 this.animateStats();
                 break;
             case 'gallery':
-                // Refresh gallery layout
+                // Ensure gallery is properly rendered
                 if (typeof Gallery !== 'undefined') {
-                    Gallery.setFilter('all');
+                    setTimeout(() => Gallery.setFilter('all'), 100);
                 }
                 break;
             case 'booking':
                 // Load any draft
                 if (typeof Booking !== 'undefined') {
-                    Booking.loadDraft();
+                    setTimeout(() => Booking.loadDraft(), 100);
+                }
+                break;
+            case 'contact':
+                // Check for product inquiry
+                const inquiry = Storage.get('inquiry_product');
+                if (inquiry) {
+                    setTimeout(() => {
+                        const messageField = document.querySelector('#contactForm textarea[name="message"]');
+                        if (messageField && !messageField.value) {
+                            messageField.value = `I am interested in purchasing: ${inquiry}\n\nPlease provide more information about availability and delivery options.`;
+                        }
+                    }, 100);
                 }
                 break;
         }
@@ -97,6 +137,9 @@ const Router = {
      */
     animateStats() {
         document.querySelectorAll('.stat-number[data-count]').forEach(stat => {
+            // Reset first
+            stat.textContent = '0';
+            
             const target = parseInt(stat.dataset.count);
             const duration = 2000;
             const start = performance.now();
