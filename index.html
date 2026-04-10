@@ -6,11 +6,6 @@
     <title>Executive Barber Shop | Premium Grooming</title>
     <meta name="description" content="Premium grooming services for executives in Nakuru. Haircuts, shaves, massages, and luxury products.">
     
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#D4AF37">
-    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,56 +14,983 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components/glassmorphism.css">
-    <link rel="stylesheet" href="css/components/navbar.css">
-    <link rel="stylesheet" href="css/components/hero.css">
-    <link rel="stylesheet" href="css/components/services.css">
-    <link rel="stylesheet" href="css/components/gallery.css">
-    <link rel="stylesheet" href="css/components/products.css">
-    <link rel="stylesheet" href="css/components/booking.css">
-    <link rel="stylesheet" href="css/components/contact.css">
-    <link rel="stylesheet" href="css/components/modal.css">
-    <link rel="stylesheet" href="css/components/toast.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-gold: #D4AF37;
+            --primary-gold-dark: #B8941F;
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #e8e8e8;
+            --text-primary: #1a1a1a;
+            --text-secondary: rgba(0, 0, 0, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glass Effect */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-gold);
+            color: var(--primary-gold);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-gold);
+            color: #000;
+        }
+
+        /* ============================================
+           NAVIGATION - DESKTOP & MOBILE
+           ============================================ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 5%;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+        }
+
+        [data-theme="light"] .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 1001;
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .desktop-nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+
+        .desktop-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gold);
+            transition: width 0.3s;
+        }
+
+        .desktop-nav a:hover,
+        .desktop-nav a.active {
+            color: var(--primary-gold);
+        }
+
+        .desktop-nav a:hover::after,
+        .desktop-nav a.active::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+            background: var(--primary-gold);
+            color: #000;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            z-index: 1001;
+        }
+
+        /* Mobile Navigation Overlay */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .mobile-nav {
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        .mobile-nav.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            transition: color 0.3s;
+        }
+
+        .mobile-nav a:hover,
+        .mobile-nav a.active {
+            color: var(--primary-gold);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .mobile-nav {
+                display: flex;
+            }
+
+            .nav-actions .btn-primary {
+                display: none;
+            }
+        }
+
+        @media (min-width: 969px) {
+            .mobile-nav {
+                display: none !important;
+            }
+        }
+
+        /* ============================================
+           SECTIONS
+           ============================================ */
+        .section {
+            min-height: 100vh;
+            padding: 120px 5% 80px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: calc(100vh - 200px);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary-gold);
+            font-weight: 700;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-image {
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .floating-card {
+            position: absolute;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-card:nth-child(2) {
+            top: 5%;
+            left: -10%;
+        }
+
+        .floating-card:nth-child(3) {
+            bottom: 10%;
+            right: -5%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Section Header */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            padding: 2.5rem;
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            background: rgba(212, 175, 55, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .service-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .service-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+        }
+
+        /* Gallery */
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-gold);
+            color: #000;
+            border-color: var(--primary-gold);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 3/4;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        /* Products */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .product-image {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        /* Booking Form */
+        .booking-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .booking-form-wrapper {
+            padding: 3rem;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-dot {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .step-dot.active {
+            background: var(--primary-gold);
+            color: #000;
+            border-color: var(--primary-gold);
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .notice-box {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 3rem;
+        }
+
+        .info-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 15px;
+            background: rgba(212, 175, 55, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--primary-gold);
+            flex-shrink: 0;
+        }
+
+        .info-content h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-gold);
+            color: #000;
+            transform: translateY(-5px);
+        }
+
+        .contact-form-card {
+            padding: 2rem;
+        }
+
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            border: none;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .toast {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--glass-shadow);
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid #4caf50;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .floating-card {
+                display: none;
+            }
+
+            .services-grid,
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map-container {
+                min-height: 300px;
+                order: -1;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .booking-form-wrapper {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-<nav class="navbar glass" id="navbar">
-    <div class="nav-container">
-        <a href="#home" class="logo" data-nav>
-            <i class="fas fa-cut"></i>
-            <span>Executive Barber</span>
-        </a>
-        
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#home" class="nav-link active" data-nav data-mobile-nav>Home</a></li>
-            <li><a href="#services" class="nav-link" data-nav data-mobile-nav>Services</a></li>
-            <li><a href="#gallery" class="nav-link" data-nav data-mobile-nav>Gallery</a></li>
-            <li><a href="#products" class="nav-link" data-nav data-mobile-nav>Products</a></li>
-            <li><a href="#booking" class="nav-link" data-nav data-mobile-nav>Book Now</a></li>
-            <li><a href="#contact" class="nav-link" data-nav data-mobile-nav>Contact</a></li>
-        </ul>
-        
-        <div class="nav-actions">
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                <i class="fas fa-moon"></i>
-            </button>
-            <a href="#booking" class="btn btn-primary desktop-only" data-nav>
-                <i class="fas fa-calendar-check"></i>
-                <span>Book</span>
-            </a>
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </div>
-</nav>
+    <div class="bg-animation"></div>
+    <canvas id="particles-canvas"></canvas>
 
-    <!-- Main Content Sections -->
-    <main id="main-content">
+    <!-- ============================================
+         NAVIGATION
+         ============================================ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo" onclick="navigateTo('home'); return false;">
+                <i class="fas fa-cut"></i>
+                <span>Executive Barber</span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <ul class="desktop-nav" id="desktopNav">
+                <li><a href="#home" class="active" onclick="navigateTo('home'); return false;">Home</a></li>
+                <li><a href="#services" onclick="navigateTo('services'); return false;">Services</a></li>
+                <li><a href="#gallery" onclick="navigateTo('gallery'); return false;">Gallery</a></li>
+                <li><a href="#products" onclick="navigateTo('products'); return false;">Products</a></li>
+                <li><a href="#booking" onclick="navigateTo('booking'); return false;">Book Now</a></li>
+                <li><a href="#contact" onclick="navigateTo('contact'); return false;">Contact</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="#booking" class="btn btn-primary" onclick="navigateTo('booking'); return false;">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Book</span>
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#home" onclick="navigateTo('home'); toggleMobileMenu(); return false;">Home</a>
+        <a href="#services" onclick="navigateTo('services'); toggleMobileMenu(); return false;">Services</a>
+        <a href="#gallery" onclick="navigateTo('gallery'); toggleMobileMenu(); return false;">Gallery</a>
+        <a href="#products" onclick="navigateTo('products'); toggleMobileMenu(); return false;">Products</a>
+        <a href="#booking" onclick="navigateTo('booking'); toggleMobileMenu(); return false;">Book Now</a>
+        <a href="#contact" onclick="navigateTo('contact'); toggleMobileMenu(); return false;">Contact</a>
+    </div>
+
+    <!-- ============================================
+         MAIN CONTENT
+         ============================================ -->
+    <main>
         <!-- Home Section -->
         <section id="home" class="section active">
             <div class="container">
@@ -81,42 +1003,39 @@
                         <h1>Premium Grooming for the Modern Executive</h1>
                         <p>Experience luxury barbering at its finest. Our master barbers combine traditional techniques with modern styling to deliver an unparalleled grooming experience.</p>
                         <div class="hero-cta">
-                            <a href="#booking" class="btn btn-primary btn-lg" data-nav>
+                            <a href="#booking" class="btn btn-primary" onclick="navigateTo('booking'); return false;">
                                 <i class="fas fa-calendar-check"></i>
                                 Book Appointment
                             </a>
-                            <a href="#services" class="btn btn-outline btn-lg" data-nav>
+                            <a href="#services" class="btn btn-outline" onclick="navigateTo('services'); return false;">
                                 <i class="fas fa-list"></i>
                                 Our Services
                             </a>
                         </div>
                         <div class="hero-stats">
                             <div class="stat">
-                                <span class="stat-number" data-count="500">0</span>
-                                <span class="stat-label">Happy Clients</span>
+                                <div class="stat-number">500+</div>
+                                <div class="stat-label">Happy Clients</div>
                             </div>
                             <div class="stat">
-                                <span class="stat-number" data-count="10">0</span>
-                                <span class="stat-label">Years Experience</span>
+                                <div class="stat-number">10+</div>
+                                <div class="stat-label">Years Experience</div>
                             </div>
                             <div class="stat">
-                                <span class="stat-number" data-count="15">0</span>
-                                <span class="stat-label">Expert Barbers</span>
+                                <div class="stat-number">15</div>
+                                <div class="stat-label">Expert Barbers</div>
                             </div>
                         </div>
                     </div>
                     <div class="hero-visual">
-                        <div class="hero-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=800&auto=format&fit=crop" 
-                                 alt="Executive Barber Shop Interior" 
-                                 class="hero-image">
-                        </div>
-                        <div class="floating-card glass-card" data-float="1">
-                            <i class="fas fa-award"></i>
+                        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=800&auto=format&fit=crop" 
+                             alt="Executive Barber Shop" class="hero-image">
+                        <div class="floating-card glass-card">
+                            <i class="fas fa-award" style="color: var(--primary-gold);"></i>
                             <span>Award Winning</span>
                         </div>
-                        <div class="floating-card glass-card" data-float="2">
-                            <i class="fas fa-clock"></i>
+                        <div class="floating-card glass-card">
+                            <i class="fas fa-clock" style="color: var(--primary-gold);"></i>
                             <span>Open 7 Days</span>
                         </div>
                     </div>
@@ -127,10 +1046,10 @@
         <!-- Services Section -->
         <section id="services" class="section">
             <div class="container">
-                <header class="section-header">
+                <div class="section-header">
                     <h2>Our Premium Services</h2>
-                    <p>Indulge in our range of executive grooming services designed for the modern professional</p>
-                </header>
+                    <p>Indulge in our range of executive grooming services</p>
+                </div>
                 <div class="services-grid" id="servicesGrid">
                     <!-- Populated by JS -->
                 </div>
@@ -140,16 +1059,16 @@
         <!-- Gallery Section -->
         <section id="gallery" class="section">
             <div class="container">
-                <header class="section-header">
+                <div class="section-header">
                     <h2>Style Gallery</h2>
-                    <p>Browse our collection of executive hairstyles and transformations</p>
-                </header>
-                <div class="gallery-filters" id="galleryFilters">
-                    <button class="filter-btn active" data-filter="all">All Styles</button>
-                    <button class="filter-btn" data-filter="short">Short & Fades</button>
-                    <button class="filter-btn" data-filter="medium">Medium Length</button>
-                    <button class="filter-btn" data-filter="long">Long & Flow</button>
-                    <button class="filter-btn" data-filter="beard">Beard Styles</button>
+                    <p>Browse our collection of executive hairstyles</p>
+                </div>
+                <div class="gallery-filters">
+                    <button class="filter-btn active" onclick="filterGallery('all')">All</button>
+                    <button class="filter-btn" onclick="filterGallery('short')">Short & Fades</button>
+                    <button class="filter-btn" onclick="filterGallery('medium')">Medium</button>
+                    <button class="filter-btn" onclick="filterGallery('long')">Long</button>
+                    <button class="filter-btn" onclick="filterGallery('beard')">Beard</button>
                 </div>
                 <div class="gallery-grid" id="galleryGrid">
                     <!-- Populated by JS -->
@@ -160,10 +1079,10 @@
         <!-- Products Section -->
         <section id="products" class="section">
             <div class="container">
-                <header class="section-header">
+                <div class="section-header">
                     <h2>Premium Products</h2>
-                    <p>Professional-grade grooming products for the executive who demands excellence</p>
-                </header>
+                    <p>Professional-grade grooming products</p>
+                </div>
                 <div class="products-grid" id="productsGrid">
                     <!-- Populated by JS -->
                 </div>
@@ -173,75 +1092,68 @@
         <!-- Booking Section -->
         <section id="booking" class="section">
             <div class="container">
-                <header class="section-header">
+                <div class="section-header">
                     <h2>Book Your Appointment</h2>
                     <p>Schedule your premium grooming experience</p>
-                </header>
+                </div>
                 <div class="booking-container">
                     <div class="glass-card booking-form-wrapper">
-                        <div class="step-indicator" id="stepIndicator">
-                            <div class="step-dot active" data-step="1">1</div>
-                            <div class="step-dot" data-step="2">2</div>
-                            <div class="step-dot" data-step="3">3</div>
+                        <div class="step-indicator">
+                            <div class="step-dot active" id="dot1">1</div>
+                            <div class="step-dot" id="dot2">2</div>
+                            <div class="step-dot" id="dot3">3</div>
                         </div>
                         
-                        <form id="bookingForm" class="booking-form" 
-                              action="https://formsubmit.co/executivebarber@example.com" 
-                              method="POST">
-                            <!-- FormSubmit Config -->
-                            <input type="hidden" name="_subject" value="New Booking Request - Executive Barber Shop">
-                            <input type="hidden" name="_template" value="table">
-                            <input type="hidden" name="_captcha" value="true">
-                            <input type="text" name="_honey" style="display:none">
-                            
-                            <!-- Step 1: Personal Info -->
-                            <div class="form-step active" data-step="1">
-                                <h3>Personal Information</h3>
+                        <form id="bookingForm" onsubmit="submitBooking(event)">
+                            <!-- Step 1 -->
+                            <div class="form-step active" id="step1">
+                                <h3 style="margin-bottom: 1.5rem;">Personal Information</h3>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="firstName">First Name *</label>
-                                        <input type="text" id="firstName" name="first_name" required 
-                                               placeholder="John" autocomplete="given-name">
+                                        <label>First Name *</label>
+                                        <input type="text" id="firstName" required placeholder="John">
                                     </div>
                                     <div class="form-group">
-                                        <label for="lastName">Last Name *</label>
-                                        <input type="text" id="lastName" name="last_name" required 
-                                               placeholder="Doe" autocomplete="family-name">
+                                        <label>Last Name *</label>
+                                        <input type="text" id="lastName" required placeholder="Doe">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="email">Email Address *</label>
-                                        <input type="email" id="email" name="email" required 
-                                               placeholder="john@example.com" autocomplete="email">
+                                        <label>Email *</label>
+                                        <input type="email" id="email" required placeholder="john@example.com">
                                     </div>
                                     <div class="form-group">
-                                        <label for="phone">Phone Number *</label>
-                                        <input type="tel" id="phone" name="phone" required 
-                                               placeholder="+254 712 345 678" autocomplete="tel">
+                                        <label>Phone *</label>
+                                        <input type="tel" id="phone" required placeholder="+254 712 345 678">
                                     </div>
                                 </div>
                                 <div class="form-navigation">
                                     <span></span>
-                                    <button type="button" class="btn btn-primary next-step">
+                                    <button type="button" class="btn btn-primary" onclick="nextStep()">
                                         Next <i class="fas fa-arrow-right"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Step 2: Service Selection -->
-                            <div class="form-step" data-step="2">
-                                <h3>Select Service</h3>
+                            <!-- Step 2 -->
+                            <div class="form-step" id="step2">
+                                <h3 style="margin-bottom: 1.5rem;">Select Service</h3>
                                 <div class="form-group">
-                                    <label for="service">Choose Service *</label>
-                                    <select id="service" name="service" required>
+                                    <label>Service *</label>
+                                    <select id="service" required onchange="handleServiceChange()">
                                         <option value="">Select a service...</option>
-                                        <!-- Populated by JS -->
+                                        <option value="haircut" data-price="50">Executive Haircut - $50 (45 min)</option>
+                                        <option value="shave" data-price="35">Royal Shave - $35 (30 min)</option>
+                                        <option value="coloring" data-price="80">Hair Coloring - $80 (60 min)</option>
+                                        <option value="massage" data-price="60" data-advance="true">Relaxation Massage - $60 (45 min)</option>
+                                        <option value="scrub" data-price="40" data-advance="true">Deep Cleansing Scrub - $40 (30 min)</option>
+                                        <option value="beard" data-price="25">Beard Trim - $25 (20 min)</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="barber">Preferred Barber (Optional)</label>
-                                    <select id="barber" name="barber">
+                                    <label>Preferred Barber</label>
+                                    <select id="barber">
                                         <option value="any">Any Available</option>
                                         <option value="james">James - Master Barber</option>
                                         <option value="michael">Michael - Style Specialist</option>
@@ -253,27 +1165,26 @@
                                     <span>This service requires booking 1-2 days in advance</span>
                                 </div>
                                 <div class="form-navigation">
-                                    <button type="button" class="btn btn-outline prev-step">
+                                    <button type="button" class="btn btn-outline" onclick="prevStep()">
                                         <i class="fas fa-arrow-left"></i> Back
                                     </button>
-                                    <button type="button" class="btn btn-primary next-step">
+                                    <button type="button" class="btn btn-primary" onclick="nextStep()">
                                         Next <i class="fas fa-arrow-right"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Step 3: Date & Time -->
-                            <div class="form-step" data-step="3">
-                                <h3>Date & Time</h3>
+                            <!-- Step 3 -->
+                            <div class="form-step" id="step3">
+                                <h3 style="margin-bottom: 1.5rem;">Date & Time</h3>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="date">Preferred Date *</label>
-                                        <input type="date" id="date" name="date" required>
-                                        <small class="form-help" id="dateHelp"></small>
+                                        <label>Date *</label>
+                                        <input type="date" id="date" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="time">Preferred Time *</label>
-                                        <select id="time" name="time" required>
+                                        <label>Time *</label>
+                                        <select id="time" required>
                                             <option value="">Select time...</option>
                                             <option value="09:00">9:00 AM</option>
                                             <option value="10:00">10:00 AM</option>
@@ -288,17 +1199,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="notes">Special Requests / Notes</label>
-                                    <textarea id="notes" name="notes" rows="4" 
-                                              placeholder="Any allergies, preferences, or special requests..."></textarea>
+                                    <label>Special Requests</label>
+                                    <textarea id="notes" rows="4" placeholder="Any special requests..."></textarea>
                                 </div>
-                                <div class="form-summary" id="bookingSummary"></div>
-                                <div class="spinner" id="formSpinner"></div>
                                 <div class="form-navigation">
-                                    <button type="button" class="btn btn-outline prev-step">
+                                    <button type="button" class="btn btn-outline" onclick="prevStep()">
                                         <i class="fas fa-arrow-left"></i> Back
                                     </button>
-                                    <button type="submit" class="btn btn-primary btn-lg">
+                                    <button type="submit" class="btn btn-primary">
                                         <i class="fas fa-calendar-check"></i> Confirm Booking
                                     </button>
                                 </div>
@@ -312,45 +1220,61 @@
         <!-- Contact Section -->
         <section id="contact" class="section">
             <div class="container">
-                <header class="section-header">
+                <div class="section-header">
                     <h2>Get In Touch</h2>
-                    <p>Visit us or send a message - we'd love to hear from you</p>
-                </header>
+                    <p>Visit us or send a message</p>
+                </div>
                 <div class="contact-grid">
                     <div class="contact-info">
-                        <div class="info-cards" id="infoCards">
-                            <!-- Populated by JS -->
+                        <div class="info-card glass-card">
+                            <div class="info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>Location</h4>
+                                <p>Executive Plaza, 2nd Floor<br>Kenyatta Avenue, Nakuru<br>Kenya</p>
+                            </div>
+                        </div>
+                        <div class="info-card glass-card">
+                            <div class="info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>Opening Hours</h4>
+                                <p>Mon - Fri: 8:00 AM - 8:00 PM<br>Sat: 9:00 AM - 6:00 PM<br>Sun: 10:00 AM - 4:00 PM</p>
+                            </div>
+                        </div>
+                        <div class="info-card glass-card">
+                            <div class="info-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>Contact</h4>
+                                <p>Phone: +254 712 345 678<br>Email: info@executivebarber.co.ke</p>
+                            </div>
                         </div>
                         
-                        <div class="social-links" id="socialLinks">
-                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-whatsapp"></i></a>
                         </div>
 
                         <div class="glass-card contact-form-card">
-                            <h3>Send us a Message</h3>
-                            <form id="contactForm" 
-                                  action="https://formsubmit.co/executivebarber@example.com" 
-                                  method="POST">
-                                <input type="hidden" name="_subject" value="New Message - Executive Barber Shop">
-                                <input type="hidden" name="_template" value="table">
-                                <input type="text" name="_honey" style="display:none">
-                                
+                            <h3 style="margin-bottom: 1.5rem;">Send Message</h3>
+                            <form onsubmit="submitContact(event)">
                                 <div class="form-group">
-                                    <input type="text" name="name" placeholder="Your Name" required 
-                                           autocomplete="name">
+                                    <input type="text" placeholder="Your Name" required>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" name="email" placeholder="Your Email" required 
-                                           autocomplete="email">
+                                    <input type="email" placeholder="Your Email" required>
                                 </div>
                                 <div class="form-group">
-                                    <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+                                    <textarea rows="4" placeholder="Your Message" required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-block">
-                                    <i class="fas fa-paper-plane"></i> Send Message
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-paper-plane"></i> Send
                                 </button>
                             </form>
                         </div>
@@ -358,8 +1282,7 @@
 
                     <div class="glass-card map-container">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d255281.19891906878!2d36.0680256!3d-0.303168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18298d8cf00f78d5%3A0x7f5e9e90a9c7c5e!2sNakuru%2C%20Kenya!5e0!3m2!1sen!2sus!4v1699000000000!5m2!1sen!2sus" 
-                                allowfullscreen loading="lazy" 
-                                referrerpolicy="no-referrer-when-downgrade">
+                                allowfullscreen loading="lazy">
                         </iframe>
                     </div>
                 </div>
@@ -368,34 +1291,426 @@
     </main>
 
     <!-- Image Modal -->
-    <div class="modal" id="imageModal" aria-hidden="true">
-        <button class="modal-close" id="modalClose" aria-label="Close modal">
+    <div class="modal" id="imageModal" onclick="closeModal(event)">
+        <button class="modal-close" onclick="closeModalBtn(event)">
             <i class="fas fa-times"></i>
         </button>
         <div class="modal-content">
-            <img id="modalImage" src="" alt="">
+            <img id="modalImage" src="" alt="" style="max-width: 100%; max-height: 85vh;">
         </div>
     </div>
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Scripts -->
-    <script src="js/data/services.js"></script>
-    <script src="js/data/gallery.js"></script>
-    <script src="js/data/products.js"></script>
-    <script src="js/utils/storage.js"></script>
-    <script src="js/utils/dateUtils.js"></script>
-    <script src="js/utils/formValidation.js"></script>
-    <script src="js/utils/toast.js"></script>
-    <script src="js/components/particles.js"></script>
-    <script src="js/components/navbar.js"></script>
-    <script src="js/components/gallery.js"></script>
-    <script src="js/components/products.js"></script>
-    <script src="js/components/booking.js"></script>
-    <script src="js/components/contact.js"></script>
-    <script src="js/theme.js"></script>
-    <script src="js/router.js"></script>
-    <script src="js/app.js"></script>
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
+    <script>
+        // ==========================================
+        // DATA
+        // ==========================================
+        const servicesData = [
+            { icon: 'fa-cut', title: 'Executive Haircut', desc: 'Precision cuts, fades, and styling tailored to your face shape.', price: '$50', duration: '45 min' },
+            { icon: 'fa-magic', title: 'Royal Shave', desc: 'Hot towel straight razor shave with premium products.', price: '$35', duration: '30 min' },
+            { icon: 'fa-palette', title: 'Hair Coloring', desc: 'Full or partial coloring using natural, premium dyes.', price: '$80', duration: '60 min' },
+            { icon: 'fa-spa', title: 'Relaxation Massage', desc: 'Head, neck, and shoulder massage to relieve tension.', price: '$60', duration: '45 min', notice: 'Book 1-2 days in advance' },
+            { icon: 'fa-spray-can', title: 'Deep Cleansing Scrub', desc: 'Facial scrub treatment to deep cleanse and rejuvenate.', price: '$40', duration: '30 min', notice: 'Book 1-2 days in advance' },
+            { icon: 'fa-user-tie', title: 'Beard Trim & Shape', desc: 'Expert beard shaping and conditioning.', price: '$25', duration: '20 min' }
+        ];
+
+        const galleryData = [
+            { category: 'short', title: 'Classic Fade', img: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&auto=format&fit=crop' },
+            { category: 'short', title: 'Textured Crop', img: 'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&auto=format&fit=crop' },
+            { category: 'medium', title: 'Executive Side Part', img: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&auto=format&fit=crop' },
+            { category: 'beard', title: 'Full Beard Trim', img: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&auto=format&fit=crop' },
+            { category: 'short', title: 'Buzz Cut', img: 'https://images.unsplash.com/photo-1599351431613-18ef1fdd27e1?w=600&auto=format&fit=crop' },
+            { category: 'medium', title: 'Pompadour', img: 'https://images.unsplash.com/photo-1567894340315-735d7f3619cb?w=600&auto=format&fit=crop' },
+            { category: 'long', title: 'Flow Hairstyle', img: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&auto=format&fit=crop' },
+            { category: 'beard', title: 'Stubble Look', img: 'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=600&auto=format&fit=crop' }
+        ];
+
+        const productsData = [
+            { name: 'Executive Pomade', desc: 'High-hold matte finish', price: 25, img: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&auto=format&fit=crop' },
+            { name: 'Clarifying Shampoo', desc: 'Deep cleansing formula', price: 20, img: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&auto=format&fit=crop' },
+            { name: 'Signature Beard Oil', desc: 'Nourishing sandalwood blend', price: 18, img: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&auto=format&fit=crop' },
+            { name: 'Luxury Shaving Cream', desc: 'Organic rich lather', price: 22, img: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&auto=format&fit=crop' },
+            { name: 'Anti-Frizz Serum', desc: 'Professional shine serum', price: 28, img: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&auto=format&fit=crop' },
+            { name: 'Texturizing Clay', desc: 'Matte finish clay', price: 24, img: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&auto=format&fit=crop' }
+        ];
+
+        // ==========================================
+        // NAVIGATION
+        // ==========================================
+        let currentRoute = 'home';
+        let isMobileMenuOpen = false;
+
+        function navigateTo(route) {
+            if (route === currentRoute) return;
+            
+            // Update sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(route).classList.add('active');
+            
+            // Update nav links
+            document.querySelectorAll('.desktop-nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + route) {
+                    link.classList.add('active');
+                }
+            });
+            
+            currentRoute = route;
+            window.scrollTo(0, 0);
+            
+            // Update URL
+            window.history.pushState({}, '', '#' + route);
+        }
+
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            const btn = document.getElementById('mobileMenuBtn');
+            const icon = btn.querySelector('i');
+            
+            isMobileMenuOpen = !isMobileMenuOpen;
+            
+            if (isMobileMenuOpen) {
+                mobileNav.classList.add('active');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileNav.classList.remove('active');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ==========================================
+        // THEME
+        // ==========================================
+        let isDark = true;
+
+        function toggleTheme() {
+            isDark = !isDark;
+            document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            
+            const icon = document.querySelector('#themeToggle i');
+            icon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+            
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // ==========================================
+        // RENDER FUNCTIONS
+        // ==========================================
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = servicesData.map(service => `
+                <div class="glass-card service-card">
+                    <div class="service-icon">
+                        <i class="fas ${service.icon}"></i>
+                    </div>
+                    <h3>${service.title}</h3>
+                    <p>${service.desc}</p>
+                    ${service.notice ? `<div class="notice-box"><i class="fas fa-info-circle"></i><span>${service.notice}</span></div>` : ''}
+                    <div class="service-meta">
+                        <span class="service-price">${service.price}</span>
+                        <span style="color: var(--text-secondary);"><i class="fas fa-clock"></i> ${service.duration}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = galleryData.map((item, index) => `
+                <div class="gallery-item" data-category="${item.category}" onclick="openModal('${item.img}', '${item.title}')">
+                    <img src="${item.img}" alt="${item.title}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h4>${item.title}</h4>
+                        <p>Click to view</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = productsData.map(product => `
+                <div class="glass-card product-card">
+                    <div class="product-image">
+                        <img src="${product.img}" alt="${product.name}" loading="lazy">
+                    </div>
+                    <h3>${product.name}</h3>
+                    <p>${product.desc}</p>
+                    <div class="product-price">$${product.price}</div>
+                    <button class="btn btn-outline" onclick="inquireProduct('${product.name}')">
+                        <i class="fas fa-envelope"></i> Inquiry
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // ==========================================
+        // GALLERY
+        // ==========================================
+        function filterGallery(category) {
+            // Update buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter items
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function openModal(src, title) {
+            const modal = document.getElementById('imageModal');
+            const img = document.getElementById('modalImage');
+            img.src = src;
+            img.alt = title;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(e) {
+            if (e.target.id === 'imageModal') {
+                document.getElementById('imageModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function closeModalBtn(e) {
+            e.stopPropagation();
+            document.getElementById('imageModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ==========================================
+        // BOOKING FORM
+        // ==========================================
+        let currentStep = 1;
+
+        function nextStep() {
+            // Validate current step
+            const stepEl = document.getElementById('step' + currentStep);
+            const required = stepEl.querySelectorAll('[required]');
+            let valid = true;
+            
+            required.forEach(field => {
+                if (!field.value.trim()) {
+                    valid = false;
+                    field.style.borderColor = '#f44336';
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            
+            if (!valid) return;
+            
+            if (currentStep < 3) {
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('dot' + currentStep).classList.remove('active');
+                currentStep++;
+                document.getElementById('step' + currentStep).classList.add('active');
+                document.getElementById('dot' + currentStep).classList.add('active');
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('dot' + currentStep).classList.remove('active');
+                currentStep--;
+                document.getElementById('step' + currentStep).classList.add('active');
+                document.getElementById('dot' + currentStep).classList.add('active');
+            }
+        }
+
+        function handleServiceChange() {
+            const select = document.getElementById('service');
+            const option = select.options[select.selectedIndex];
+            const requiresAdvance = option.dataset.advance === 'true';
+            const notice = document.getElementById('advanceNotice');
+            const dateInput = document.getElementById('date');
+            
+            if (requiresAdvance) {
+                notice.style.display = 'flex';
+                // Set min date to 2 days from now
+                const minDate = new Date();
+                minDate.setDate(minDate.getDate() + 2);
+                dateInput.min = minDate.toISOString().split('T')[0];
+            } else {
+                notice.style.display = 'none';
+                // Set min date to tomorrow
+                const minDate = new Date();
+                minDate.setDate(minDate.getDate() + 1);
+                dateInput.min = minDate.toISOString().split('T')[0];
+            }
+        }
+
+        function submitBooking(e) {
+            e.preventDefault();
+            showToast('Booking request sent successfully!', 'success');
+            
+            // Reset form
+            setTimeout(() => {
+                document.getElementById('bookingForm').reset();
+                currentStep = 1;
+                document.querySelectorAll('.form-step').forEach((step, i) => {
+                    step.classList.toggle('active', i === 0);
+                });
+                document.querySelectorAll('.step-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === 0);
+                });
+            }, 2000);
+        }
+
+        // ==========================================
+        // CONTACT & PRODUCTS
+        // ==========================================
+        function inquireProduct(productName) {
+            navigateTo('contact');
+            const textarea = document.querySelector('#contact textarea');
+            if (textarea) {
+                textarea.value = `I am interested in: ${productName}\n\nPlease provide more information.`;
+            }
+        }
+
+        function submitContact(e) {
+            e.preventDefault();
+            showToast('Message sent successfully!', 'success');
+            e.target.reset();
+        }
+
+        // ==========================================
+        // TOAST NOTIFICATIONS
+        // ==========================================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // ==========================================
+        // PARTICLES
+        // ==========================================
+        function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+            
+            const particles = [];
+            const count = Math.min(50, (canvas.width * canvas.height) / 30000);
+            
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    opacity: Math.random() * 0.5 + 0.2
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(p => {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.y > canvas.height) p.y = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(212, 175, 55, ${p.opacity})`;
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                isDark = false;
+                document.body.setAttribute('data-theme', 'light');
+                document.querySelector('#themeToggle i').className = 'fas fa-sun';
+            }
+            
+            // Initialize
+            renderServices();
+            renderGallery();
+            renderProducts();
+            initParticles();
+            
+            // Set initial date min
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('date').min = tomorrow.toISOString().split('T')[0];
+            
+            // Handle initial hash
+            const hash = window.location.hash.substring(1);
+            if (hash && hash !== 'home') {
+                navigateTo(hash);
+            }
+            
+            // Scroll effect for navbar
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled', 'glass');
+                } else {
+                    navbar.classList.remove('scrolled', 'glass');
+                }
+            });
+        });
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.substring(1) || 'home';
+            navigateTo(hash);
+        });
+    </script>
 </body>
 </html>
