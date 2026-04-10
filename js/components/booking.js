@@ -1,5 +1,3 @@
-// Booking Form Component
-
 const Booking = {
     form: null,
     currentStep: 1,
