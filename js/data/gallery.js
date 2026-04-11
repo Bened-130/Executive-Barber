@@ -1,4 +1,3 @@
-// Gallery Image Data
 const galleryData = [
     {
         id: 1,
