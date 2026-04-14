@@ -19,13 +19,16 @@
         :root {
             --primary-gold: #D4AF37;
             --primary-gold-dark: #B8941F;
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a2e;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
+            --primary-gold-light: #F3E2A9;
+            --bg-primary: #070708;
+            --bg-secondary: #141422;
+            --bg-tertiary: #1e2034;
+            --text-primary: #f6f5f0;
+            --text-secondary: rgba(246, 245, 240, 0.72);
+            --text-muted: rgba(246, 245, 240, 0.45);
             --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.18);
-            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.14);
+            --glass-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
         }
 
         [data-theme="light"] {
@@ -49,9 +52,10 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
+            background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.12), transparent 22%), var(--bg-primary);
             color: var(--text-primary);
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
         /* Background */
@@ -85,18 +89,18 @@
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 24px;
             transition: all 0.4s ease;
         }
 
         .glass-card:hover {
             transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.12);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
         }
 
         /* Buttons */
@@ -145,6 +149,8 @@
             width: 100%;
             z-index: 1000;
             padding: 1rem 5%;
+            background: rgba(10, 10, 10, 0.58);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             transition: all 0.3s ease;
         }
 
@@ -330,7 +336,7 @@
            ============================================ */
         .section {
             min-height: 100vh;
-            padding: 120px 5% 80px;
+            padding: 140px 5% 90px;
             display: none;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -355,6 +361,10 @@
             min-height: calc(100vh - 200px);
         }
 
+        .hero-content {
+            max-width: 680px;
+        }
+
         .hero-badge {
             display: inline-flex;
             align-items: center;
@@ -370,16 +380,18 @@
 
         .hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            line-height: 1.1;
+            font-size: clamp(3rem, 4.5vw, 4.2rem);
+            line-height: 1.05;
             margin-bottom: 1.5rem;
+            max-width: 700px;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.08rem;
             color: var(--text-secondary);
-            margin-bottom: 2rem;
+            margin-bottom: 2.25rem;
             line-height: 1.8;
+            max-width: 620px;
         }
 
         .hero-cta {
@@ -411,12 +423,16 @@
 
         .hero-visual {
             position: relative;
+            overflow: hidden;
+            border-radius: 32px;
         }
 
         .hero-image {
             width: 100%;
-            border-radius: 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            height: 100%;
+            border-radius: 32px;
+            object-fit: cover;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
         }
 
         .floating-card {
@@ -455,6 +471,7 @@
             font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            letter-spacing: 0.02em;
         }
 
         .section-header p {
@@ -470,6 +487,7 @@
 
         .service-card {
             padding: 2.5rem;
+            min-height: 370px;
         }
 
         .service-icon {
@@ -522,12 +540,13 @@
         .filter-btn {
             padding: 0.75rem 1.5rem;
             border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.08);
             color: var(--text-primary);
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
 
         .filter-btn:hover,
@@ -587,6 +606,7 @@
         .product-card {
             padding: 2.5rem;
             text-align: center;
+            min-height: 380px;
         }
 
         .product-image {
@@ -936,6 +956,66 @@
                 padding: 2rem 1.5rem;
             }
         }
+
+        /* Footer */
+        .footer {
+            background: rgba(10, 10, 10, 0.92);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            padding: 3rem 5%;
+        }
+
+        .footer .container {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .footer h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-gold);
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer p,
+        .footer a,
+        .footer span {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .footer a {
+            display: block;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: var(--primary-gold);
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .footer .container {
+                grid-template-columns: 1fr;
+            }
+
+            .footer {
+                padding: 2rem 5%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -958,7 +1038,7 @@
                 <li><a href="#services" onclick="navigateTo('services'); return false;">Services</a></li>
                 <li><a href="#gallery" onclick="navigateTo('gallery'); return false;">Gallery</a></li>
                 <li><a href="#products" onclick="navigateTo('products'); return false;">Products</a></li>
-                <li><a href="#booking" onclick="navigateTo('booking'); return false;">Book Now</a></li>
+                <li><a href="#booking" onclick="navigateTo('booking'); return false;">Reserve Now</a></li>
                 <li><a href="#contact" onclick="navigateTo('contact'); return false;">Contact</a></li>
             </ul>
             
@@ -983,7 +1063,7 @@
         <a href="#services" onclick="navigateTo('services'); toggleMobileMenu(); return false;">Services</a>
         <a href="#gallery" onclick="navigateTo('gallery'); toggleMobileMenu(); return false;">Gallery</a>
         <a href="#products" onclick="navigateTo('products'); toggleMobileMenu(); return false;">Products</a>
-        <a href="#booking" onclick="navigateTo('booking'); toggleMobileMenu(); return false;">Book Now</a>
+        <a href="#booking" onclick="navigateTo('booking'); toggleMobileMenu(); return false;">Reserve Now</a>
         <a href="#contact" onclick="navigateTo('contact'); toggleMobileMenu(); return false;">Contact</a>
     </div>
 
@@ -998,14 +1078,14 @@
                     <div class="hero-content">
                         <div class="hero-badge">
                             <i class="fas fa-star"></i>
-                            <span>Nakuru's Premier Executive Grooming Lounge</span>
+                            <span>Luxury Grooming for Professionals</span>
                         </div>
                         <h1>Premium Grooming for the Modern Executive</h1>
-                        <p>Experience luxury barbering at its finest. Our master barbers combine traditional techniques with modern styling to deliver an unparalleled grooming experience.</p>
+                        <p>Enjoy private consultations, bespoke styling, and refined service in a calm executive lounge. Every appointment is tailored to create a confident, polished finish.</p>
                         <div class="hero-cta">
                             <a href="#booking" class="btn btn-primary" onclick="navigateTo('booking'); return false;">
                                 <i class="fas fa-calendar-check"></i>
-                                Book Appointment
+                                Reserve Appointment
                             </a>
                             <a href="#services" class="btn btn-outline" onclick="navigateTo('services'); return false;">
                                 <i class="fas fa-list"></i>
@@ -1015,15 +1095,15 @@
                         <div class="hero-stats">
                             <div class="stat">
                                 <div class="stat-number">500+</div>
-                                <div class="stat-label">Happy Clients</div>
+                                <div class="stat-label">Clients Served</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-number">10+</div>
-                                <div class="stat-label">Years Experience</div>
+                                <div class="stat-label">Years of Service</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-number">15</div>
-                                <div class="stat-label">Expert Barbers</div>
+                                <div class="stat-label">Senior Stylists</div>
                             </div>
                         </div>
                     </div>
@@ -1048,7 +1128,7 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Our Premium Services</h2>
-                    <p>Indulge in our range of executive grooming services</p>
+                    <p>Curated grooming rituals designed for busy professionals.</p>
                 </div>
                 <div class="services-grid" id="servicesGrid">
                     <!-- Populated by JS -->
@@ -1061,7 +1141,7 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Style Gallery</h2>
-                    <p>Browse our collection of executive hairstyles</p>
+                    <p>Inspiration for polished looks, precision cuts, and refined beards.</p>
                 </div>
                 <div class="gallery-filters">
                     <button class="filter-btn active" onclick="filterGallery('all')">All</button>
@@ -1081,7 +1161,7 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Premium Products</h2>
-                    <p>Professional-grade grooming products</p>
+                    <p>Professional formulas used in the lounge and available to take home.</p>
                 </div>
                 <div class="products-grid" id="productsGrid">
                     <!-- Populated by JS -->
@@ -1222,7 +1302,7 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Get In Touch</h2>
-                    <p>Visit us or send a message</p>
+                    <p>Visit our lounge or send a direct message to reserve your appointment.</p>
                 </div>
                 <div class="contact-grid">
                     <div class="contact-info">
@@ -1281,13 +1361,39 @@
                     </div>
 
                     <div class="glass-card map-container">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d255281.19891906878!2d36.0680256!3d-0.303168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18298d8cf00f78d5%3A0x7f5e9e90a9c7c5e!2sNakuru%2C%20Kenya!5e0!3m2!1sen!2sus!4v1699000000000!5m2!1sen!2sus" 
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.520434874759!2d37.648865176666834!3d0.1061628398424835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1786f84fa7b0e415%3A0x6f10cdeb2a36bf26!2sKirindine%2C%20Meru%2C%20Kenya!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus" 
                                 allowfullscreen loading="lazy">
                         </iframe>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div>
+                    <h3>Executive Barber</h3>
+                    <p>Delivering tailored grooming services for professionals who demand precision, privacy, and polish. Our lounge combines curated styling, premium products, and a seamless booking experience.</p>
+                </div>
+
+                <div>
+                    <h3>Quick Links</h3>
+                    <a href="#home" onclick="navigateTo('home'); return false;">Home</a>
+                    <a href="#services" onclick="navigateTo('services'); return false;">Services</a>
+                    <a href="#gallery" onclick="navigateTo('gallery'); return false;">Gallery</a>
+                    <a href="#booking" onclick="navigateTo('booking'); return false;">Reserve</a>
+                </div>
+
+                <div>
+                    <h3>Contact</h3>
+                    <span>Executive Plaza, 2nd Floor<br>Kenyatta Avenue, Nakuru</span>
+                    <span>Phone: +254 712 345 678</span>
+                    <span>Email: info@executivebarber.co.ke</span>
+                </div>
+            </div>
+            <div class="footer-note">&copy; 2026 Executive Barber. Crafted for executives seeking exceptional grooming.</div>
+        </footer>
     </main>
 
     <!-- Image Modal -->
