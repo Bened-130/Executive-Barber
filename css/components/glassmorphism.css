@@ -1,0 +1,43 @@
+/* Glassmorphism Component Styles */
+
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-bounce);
+}
+
+.glass-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: var(--glass-bg-hover);
+    box-shadow: var(--glass-shadow-hover);
+    border-color: var(--glass-border-hover);
+}
+
+/* Glass Variants */
+.glass-dark {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.glass-light {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Glass Border Variants */
+.glass-border-gold {
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.glass-border-gold:hover {
+    border-color: rgba(212, 175, 55, 0.6);
+}
